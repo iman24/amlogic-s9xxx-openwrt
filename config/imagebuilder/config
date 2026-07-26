@@ -12,6 +12,14 @@
 #
 #======================================================================================
 #
+# 0. Firmware
+CONFIG_PACKAGE_rtl8188eu-firmware=y
+CONFIG_PACKAGE_ath9k-htc-firmware=y
+CONFIG_PACKAGE_kmod-ath9k=y
+CONFIG_ATH9K_HWRNG=y
+CONFIG_PACKAGE_kmod-ath9k-common=y
+CONFIG_PACKAGE_kmod-ath9k-htc=y
+
 # 1. Applications
 #
 # CONFIG_PACKAGE_luci-app-acl is not set
