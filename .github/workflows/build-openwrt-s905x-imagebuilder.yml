@@ -151,8 +151,9 @@ jobs:
           echo "build_tag=OpenWrt_imagebuilder_${RELEASES_BRANCH/:/_}_$(date +"%Y.%m")" >> ${GITHUB_ENV}
           # Create symbolic link for packaging
           [[ -d "/builder/openwrt" ]] || mkdir -p /builder/openwrt
-          mkdir -p /home/runner/work/_actions/ophub/amlogic-s9xxx-openwrt/main
-          ln -sf /builder/openwrt /home/runner/work/_actions/ophub/amlogic-s9xxx-openwrt/main/openwrt
+          action_dir="/home/runner/work/_actions/${{ github.repository }}/main"
+          mkdir -p "${action_dir}"
+          ln -sf /builder/openwrt "${action_dir}/openwrt"
           df -hT ${PWD}
           echo "status=success" >> ${GITHUB_OUTPUT}
 
@@ -170,7 +171,7 @@ jobs:
 
       - name: Package OpenWrt for target boards
         if: ${{ steps.imagebuilder.outputs.status == 'success' && !cancelled() }}
-        uses: ophub/amlogic-s9xxx-openwrt@main
+        uses: ${{ github.repository }}@main
         with:
           openwrt_path: output/*rootfs.tar.gz
           openwrt_ip: ${{ inputs.openwrt_ip }}
@@ -194,7 +195,7 @@ jobs:
           gh_token: ${{ secrets.GITHUB_TOKEN }}
           body: |
             ### OpenWrt Image Information
-            - Default IP: `192.168.1.1`
+            - Default IP: `${{ inputs.openwrt_ip }}`
             - Default username: `root`
             - Default password: `password`
             - Default WIFI name: `OpenWrt`
